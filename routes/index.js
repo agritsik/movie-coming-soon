@@ -21,8 +21,8 @@ router.get('/', (req, res) => {
 router.get('/search', (req, res) => {
 
     // todo: switch to promises
-    getData(req.query.s, 2016, (result16) => {
-        getData(req.query.s, 2017, (result17) => {
+    _getData(req.query.s, 2016, (result16) => {
+        _getData(req.query.s, 2017, (result17) => {
             let arr1 = JSON.parse(result16).Search;
             let arr2 = JSON.parse(result17).Search;
             res.send(arr1.concat(arr2)); // todo: check if arr is null
@@ -31,7 +31,7 @@ router.get('/search', (req, res) => {
 });
 
 // todo: function declaration http://stackoverflow.com/a/336868/5253591
-function getData(title, year, cb) {
+function _getData(title, year, cb) {
     redisClient.get(`q:${year}:${title}`, (err, reply) => {
         if (reply != null) {
             cb(reply);
