@@ -1,11 +1,12 @@
-"use strict";
+"use strict"; // todo: do we need strict?
 
 const express = require('express');
 const request = require('request');
 const redis = require('redis');
 
-const OMDB_URL = 'http://www.omdbapi.com/';
+const OMDB_URL = 'http://www.omdbapi.com/'; // todo: settings
 
+// todo: modules http://stackoverflow.com/a/10328308/5253591
 let router = express.Router();
 let redisClient = redis.createClient(6379, '192.168.99.100');
 
@@ -24,11 +25,12 @@ router.get('/search', (req, res) => {
         getData(req.query.s, 2017, (result17) => {
             let arr1 = JSON.parse(result16).Search;
             let arr2 = JSON.parse(result17).Search;
-            res.send(arr1.concat(arr2));
+            res.send(arr1.concat(arr2)); // todo: check if arr is null
         });
     });
 });
 
+// todo: function declaration http://stackoverflow.com/a/336868/5253591
 function getData(title, year, cb) {
     redisClient.get(`q:${year}:${title}`, (err, reply) => {
         if (reply != null) {
