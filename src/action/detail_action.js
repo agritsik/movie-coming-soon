@@ -1,6 +1,6 @@
 "use strict";
 const request = require('request');
-const mongoDB = require('./mongo');
+const mongoDB = require('src/mongo_client');
 
 const OMDB_URL = 'http://www.omdbapi.com/'; // todo: settings
 
@@ -11,7 +11,6 @@ module.exports = (id, email) => {
             mongoDB.db.collection('movies').insertOne({email: email, movie: body})
                 .then(r => resolve(r.insertedCount))
                 .catch(err => reject(err));
-            resolve();
         });
     });
 

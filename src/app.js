@@ -9,7 +9,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // routes
-app.use('/', require('./routes/index'));
+app.use('/', require('src/boundary/index_resource'));
+app.use('/search', require('src/boundary/search_resource'));
+app.use('/reminders', require('src/boundary/reminders_resource'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -4,8 +4,8 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var mongo = require('../mongo');
+var app = require('src/app');
+var mongo = require('src/mongo_client');
 var debug = require('debug')('csm:server');
 var http = require('http');
 
