@@ -1,8 +1,7 @@
 "use strict";
-const request = require('request');
-const redis = require('src/redis_client');
 
-const OMDB_URL = 'http://www.omdbapi.com/'; // todo: settings
+const redis = require('src/redis_client');
+const omdbClient = require('src/boundary/omdb/client');
 
 module.exports = (title) => {
 
@@ -22,16 +21,17 @@ function _search(title, year) {
 
         // check cache
         redis.get(`q:${year}:${title}`, (err, reply) => {
-            if(err) reject(err);
+            if (err) reject(err);
 
             if (reply != null) {
                 resolve(reply);
             } else {
-                request(`${OMDB_URL}?s=${title}&y=${year}&type=movie`, (err, response, body) => {
-                    if(err) reject(err);
-                    redis.setex(`q:${year}:${title}`, 3600, body);
-                    resolve(body);
-                });
+                omdbClient.searchByTitle(title, year)
+                    .then(data => {
+                        // put into the cache storage
+                        redis.setex(`q:${year}:${title}`, 3600, data);
+                        resolve(data);
+                    }).catch(err => reject(err));
             }
         })
     });
