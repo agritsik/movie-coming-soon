@@ -23,9 +23,9 @@ router.get('/search', (req, res) => {
 });
 
 router.post('/reminders', (req, res) => {
-    detailAction(req.body.imdbID)
+    detailAction(req.body.imdbID, req.body.email)
         .then(r => res.status(201).send())
-        .catch(err => res.status(201).send(err));
+        .catch(err => res.status(500).send(err));
 });
 
 module.exports = router;
