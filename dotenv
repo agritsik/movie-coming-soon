@@ -1,0 +1,7 @@
+
+MONGO_URL="mongodb://localhost:27017/mcs"
+
+REDIS_HOST=localhost
+REDIS_PORT=6379
+
+OMDB_URL=http://www.omdbapi.com/
