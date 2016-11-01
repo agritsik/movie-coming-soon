@@ -11,7 +11,7 @@ module.exports.searchByTitle = (title, year) => {
         console.log(`Request to ${url}`); // todo: move to interceptor
 
         request(url, (err, response, body) => {
-            if (err) reject(err);
+            if (err) return reject(err);
             resolve(body);
         });
     });
@@ -24,7 +24,7 @@ module.exports.searchById = (id) => {
         console.log(`Request to ${url}`); // todo: move to interceptor
 
         request(url, (err, response, body) => {
-            if (err) reject(err);
+            if (err) return reject(err);
             resolve(body);
         });
     });
