@@ -10,28 +10,29 @@ module.exports = (title) => {
     return Promise
         .all(years.map(year => _search(title, year)))
         .then(r => {
+            console.log(r);
             const map = r.map(e => JSON.parse(e).Search); // todo: check if arr is null
             return [].concat.apply([], map);
-        })//.catch(err => Promise.reject(err));
+        })
 };
 
 function _search(title, year) {
-    return new Promise((resolve, reject)=> {
+    let f = cacheStorage
+        .get(title, year)
+        .then((data) => {
 
-        // check cache
-        cacheStorage.get(`q:${year}:${title}`)
-            .then((data) => {
+            if (data == null) {
+                data = omdbClient
+                    .searchByTitle(title, year)
+                    .then(omdbData => {
+                        cacheStorage.set(title, year, omdbData);
+                        return omdbData;
+                    });
+            }
 
-                if (data != null) {
-                    return resolve(data);
-                } else {
-                    omdbClient.searchByTitle(title, year)
-                        .then(omdbData => {
-                            // put into the cache storage
-                            cacheStorage.set(`q:${year}:${title}`, omdbData);
-                            return resolve(omdbData);
-                        }).catch(err => reject(err));
-                }
-            }).catch(err => reject(err));
-    });
+            return data;
+
+        });
+
+    return f;
 }
