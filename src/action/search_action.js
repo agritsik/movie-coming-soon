@@ -1,6 +1,6 @@
 "use strict";
 
-const redis = require('src/redis_client');
+const cacheStorage = require('src/boundary/cache/cache_storage');
 const omdbClient = require('src/boundary/omdb/client');
 
 module.exports = (title) => {
@@ -15,24 +15,23 @@ module.exports = (title) => {
         })//.catch(err => Promise.reject(err));
 };
 
-
 function _search(title, year) {
     return new Promise((resolve, reject)=> {
 
         // check cache
-        redis.get(`q:${year}:${title}`, (err, reply) => {
-            if (err) return reject(err);
+        cacheStorage.get(`q:${year}:${title}`)
+            .then((data) => {
 
-            if (reply != null) {
-                return resolve(reply);
-            } else {
-                omdbClient.searchByTitle(title, year)
-                    .then(data => {
-                        // put into the cache storage
-                        redis.setex(`q:${year}:${title}`, 3600, data);
-                        return resolve(data);
-                    }).catch(err => reject(err));
-            }
-        })
+                if (data != null) {
+                    return resolve(data);
+                } else {
+                    omdbClient.searchByTitle(title, year)
+                        .then(omdbData => {
+                            // put into the cache storage
+                            cacheStorage.set(`q:${year}:${title}`, omdbData);
+                            return resolve(omdbData);
+                        }).catch(err => reject(err));
+                }
+            }).catch(err => reject(err));
     });
-};
+}
