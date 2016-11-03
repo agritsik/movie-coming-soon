@@ -11,7 +11,7 @@ module.exports = (title) => {
         .all(years.map(year => _search(title, year)))
         .then(r => {
             console.log(r);
-            const map = r.map(e => JSON.parse(e).Search); // todo: check if arr is null
+            const map = r.map(e => JSON.parse(e).Search || []);
             return [].concat.apply([], map);
         })
 };
