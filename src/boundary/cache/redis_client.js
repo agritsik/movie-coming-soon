@@ -1,16 +1,16 @@
 "use strict";
 
 const redis = require('redis');
-// redisClient.on("ready", () => console.log("Redis is ready"));
-// redisClient.on("error", err => console.log("Redis Error: " + err));
 
 let redisClient;
 module.exports.init = () => {
-    redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST);
-    return new Promise((resolve, reject) => redisClient.on("ready", () => {
-        console.log("Redis connection is established");
-        resolve()
-    }));
+    return new Promise((resolve, reject) => {
+        redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST);
+        redisClient.on("ready", () => {
+            console.log("Redis connection is established");
+            resolve()
+        })
+    });
 };
 
 module.exports.get = (title, year) => {
