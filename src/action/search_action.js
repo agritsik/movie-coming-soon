@@ -1,6 +1,6 @@
 "use strict";
 
-const cacheStorage = require('src/boundary/cache/cache_storage');
+const cacheStorage = require('src/boundary/cache/redis_client');
 const omdbClient = require('src/boundary/omdb/client');
 
 module.exports = (title) => {

@@ -1,93 +1,23 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
+"use strict";
 
-var app = require('src/app');
-var mongo = require('src/boundary/db/mongo_client');
-var debug = require('debug')('csm:server');
-var http = require('http');
+const app = require('src/app');
+const mongo = require('src/boundary/db/mongo_client');
+const redis = require('src/boundary/cache/redis_client');
+const debug = require('debug')('csm:server');
+const http = require('http');
 
-/**
- * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || '3000');
+const port = process.env.PORT || '3000';
 app.set('port', port);
+const server = http.createServer(app);
 
-/**
- * Create HTTP server.
- */
+// start server
+Promise
+    .all([mongo.init(), redis.init()])
+    .then(() => server.listen(port));
 
-var server = http.createServer(app);
+server.on('listening', () => console.log("Microservice is up and running"));
 
-/**
- * Listen on provided port, on all network interfaces.
- */
 
-mongo.init().then(() => {
-  server.listen(port);
-  server.on('error', onError);
-  server.on('listening', onListening);
-});
 
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
-
-/**
- * Event listener for HTTP server "error" event.
- */
-
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-}
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-}
