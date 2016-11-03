@@ -8,6 +8,6 @@ module.exports = express.Router()
 
         createReminderAction(req.body.imdbID, req.body.email)
             .then(data => res.status(201).send({insertedCount: data}))
-            .catch(err => next(err));
+            .catch(next);
 
     });

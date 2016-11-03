@@ -8,7 +8,7 @@ module.exports = express.Router()
 
         searchAction(req.query.s)
             .then(data => res.send(data))
-            .catch(err => next(err));
+            .catch(next);
 
     });
 
