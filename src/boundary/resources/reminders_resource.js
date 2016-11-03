@@ -1,13 +1,13 @@
 "use strict";
 
 const express = require('express');
-const detailAction = require('src/action/detail_action');
+const createReminderAction = require('src/action/create_reminder_action');
 
 module.exports = express.Router()
-    .post('/', (req, res) => {
+    .post('/', (req, res, next) => {
 
-        detailAction(req.body.imdbID, req.body.email)
+        createReminderAction(req.body.imdbID, req.body.email)
             .then(data => res.status(201).send({insertedCount: data}))
-            .catch(err => res.status(500).send(err));
+            .catch(err => next(err));
 
     });

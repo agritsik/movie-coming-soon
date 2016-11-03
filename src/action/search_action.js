@@ -17,7 +17,7 @@ module.exports = (title) => {
 };
 
 function _search(title, year) {
-    let f = cacheStorage
+    return cacheStorage
         .get(title, year)
         .then((data) => {
 
@@ -34,5 +34,4 @@ function _search(title, year) {
 
         });
 
-    return f;
 }
