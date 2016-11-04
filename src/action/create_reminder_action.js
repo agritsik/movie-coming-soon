@@ -1,5 +1,3 @@
-"use strict";
-
 const mongoDB = require('src/boundary/db/mongo_client');
 const omdbClient = require('src/boundary/omdb/client');
 

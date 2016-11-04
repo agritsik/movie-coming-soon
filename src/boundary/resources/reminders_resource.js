@@ -1,5 +1,3 @@
-"use strict";
-
 const express = require('express');
 const createReminderAction = require('src/action/create_reminder_action');
 

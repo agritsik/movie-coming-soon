@@ -1,5 +1,3 @@
-"use strict";
-
 const express = require('express');
 const searchAction = require('src/action/search_action');
 
