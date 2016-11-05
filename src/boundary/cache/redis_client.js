@@ -4,10 +4,12 @@ let redisClient;
 module.exports.init = () => {
     return new Promise((resolve, reject) => {
         redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST);
-        redisClient.on("ready", () => {
-            console.log("Redis connection is established");
-            resolve()
-        })
+        redisClient.on('ready', () => {
+            console.log('Redis connection is established');
+            resolve();
+        });
+
+        redisClient.on('error', (err) => reject(err));
     });
 };
 
@@ -18,7 +20,7 @@ module.exports.get = (title, year) => {
 
             resolve(reply);
         });
-    })
+    });
 };
 
 module.exports.set = (title, year, value) => {
@@ -28,5 +30,5 @@ module.exports.set = (title, year, value) => {
 
             resolve(reply);
         });
-    })
+    });
 };

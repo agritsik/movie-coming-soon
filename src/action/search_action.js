@@ -11,7 +11,7 @@ module.exports = (title) => {
             console.log(r);
             const map = r.map(e => JSON.parse(e).Search || []);
             return [].concat.apply([], map);
-        })
+        });
 };
 
 function _search(title, year) {

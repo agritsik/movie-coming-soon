@@ -1,11 +1,7 @@
 #!/usr/bin/env node
-
-"use strict";
-
 const app = require('src/app');
 const mongo = require('src/boundary/db/mongo_client');
 const redis = require('src/boundary/cache/redis_client');
-const debug = require('debug')('csm:server');
 const http = require('http');
 
 const port = process.env.PORT || '3000';
@@ -15,9 +11,10 @@ const server = http.createServer(app);
 // start server
 Promise
     .all([mongo.init(), redis.init()])
-    .then(() => server.listen(port));
+    .then(() => server.listen(port))
+    .catch((err)=> console.log(err));
 
-server.on('listening', () => console.log("Microservice is up and running"));
+server.on('listening', () => console.log('Microservice is up and running'));
 
 
 
