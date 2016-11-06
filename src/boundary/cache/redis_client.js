@@ -25,7 +25,7 @@ module.exports.get = (title, year) => {
 
 module.exports.set = (title, year, value) => {
     return new Promise((resolve, reject) => {
-        redisClient.setex(`q:${year}:${title}`, 1, value, (err, reply) => {
+        redisClient.setex(`q:${year}:${title}`, process.env.REDIS_TTL, value, (err, reply) => {
             if (err) return reject(err);
 
             resolve(reply);

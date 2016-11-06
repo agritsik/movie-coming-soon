@@ -8,7 +8,7 @@ module.exports = (title) => {
     return Promise
         .all(years.map(year => _search(title, year)))
         .then(r => {
-            console.log(r);
+            console.log(`PROMISES - ${r}`);
             const map = r.map(e => JSON.parse(e).Search || []);
             return [].concat.apply([], map);
         });
