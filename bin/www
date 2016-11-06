@@ -3,6 +3,7 @@ const app = require('src/app');
 const mongo = require('src/boundary/db/mongo_client');
 const redis = require('src/boundary/cache/redis_client');
 const http = require('http');
+const logger = require('winston');
 
 const port = process.env.PORT || '3000';
 app.set('port', port);
@@ -12,9 +13,9 @@ const server = http.createServer(app);
 Promise
     .all([mongo.init(), redis.init()])
     .then(() => server.listen(port))
-    .catch((err)=> console.log(err));
+    .catch((err)=> logger.error(err));
 
-server.on('listening', () => console.log('Microservice is up and running'));
+server.on('listening', () => logger.info('Microservice is up and running'));
 
 
 

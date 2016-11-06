@@ -1,10 +1,12 @@
 require('dotenv').config();
 const express = require('express');
-const logger = require('morgan');
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const logger = require('winston');
+logger.level = 'debug';
 
 var app = express();
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -17,7 +19,7 @@ app.use('/reminders', require('src/boundary/resources/reminders_resource'));
 // error handlers
 app.use(function (err, req, res) {
     res.status(err.status || 500);
-    console.log(err.stack);
+    logger.error(err);
 
     res.json({
         message: err.message,

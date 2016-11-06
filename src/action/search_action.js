@@ -1,5 +1,6 @@
 const cacheStorage = require('src/boundary/cache/redis_client');
 const omdbClient = require('src/boundary/omdb/client');
+const logger = require('winston');
 
 module.exports = (title) => {
 
@@ -8,7 +9,7 @@ module.exports = (title) => {
     return Promise
         .all(years.map(year => _search(title, year)))
         .then(r => {
-            console.log(`PROMISES - ${r}`);
+            logger.debug(`promises search result: ${r}`);
             const map = r.map(e => JSON.parse(e).Search || []);
             return [].concat.apply([], map);
         });

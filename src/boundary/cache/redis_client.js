@@ -1,11 +1,12 @@
 const redis = require('redis');
+const logger = require('winston');
 
 let redisClient;
 module.exports.init = () => {
     return new Promise((resolve, reject) => {
         redisClient = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST);
         redisClient.on('ready', () => {
-            console.log('Redis connection is established');
+            logger.info('Redis connection is established');
             resolve();
         });
 
