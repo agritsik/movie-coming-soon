@@ -9,7 +9,7 @@ module.exports = express.Router()
             ? createReminderActionGen
             : createReminderAction;
 
-        action(req.body.imdbID, req.body.email)
+        action.execute(req.body.imdbID, req.body.email)
             .then(data => res.status(201).send({insertedCount: data}))
             .catch(next);
 

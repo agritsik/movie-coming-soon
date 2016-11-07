@@ -9,7 +9,7 @@ module.exports = express.Router()
             ? searchActionGen
             : searchAction;
 
-        action(req.query.s)
+        action.execute(req.query.s)
             .then(data => res.send(data))
             .catch(next);
 

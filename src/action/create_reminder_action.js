@@ -1,10 +1,13 @@
 const mongoClient = require('src/boundary/db/mongo_client');
 const omdbClient = require('src/boundary/omdb/client');
 
-module.exports = (id, email) => {
+class CreateReminderActionGen {
 
-    return omdbClient.searchById(id)
-        .then(data => mongoClient.create(email, data))
-        .then(data => data.insertedCount);
+    execute(id, email) {
+        return omdbClient.searchById(id)
+            .then(data => mongoClient.create(email, data))
+            .then(data => data.insertedCount);
+    }
+}
 
-};
+module.exports = new CreateReminderActionGen();

@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const logger = require('winston');
 logger.level = 'debug';
 
-var app = express();
+const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
