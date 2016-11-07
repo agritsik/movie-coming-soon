@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "NODE_PATH=. node $NODE_DEBUG_OPTION --use_strict ./bin/www"
+    "start": "NODE_PATH=. node $NODE_DEBUG_OPTION --use_strict ./bin/www",
+    "test": "NODE_PATH=.  mocha --use_strict  test/spec.js"
   },
   "dependencies": {
     "body-parser": "~1.15.1",
@@ -20,6 +21,8 @@
     "eslint": "^3.9.1",
     "eslint-config-standard": "^6.2.1",
     "eslint-plugin-promise": "^3.3.1",
-    "eslint-plugin-standard": "^2.0.1"
+    "eslint-plugin-standard": "^2.0.1",
+    "mocha": "^3.1.2",
+    "supertest": "^2.0.1"
   }
 }
