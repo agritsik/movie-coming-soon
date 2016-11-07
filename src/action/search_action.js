@@ -1,4 +1,4 @@
-const cacheStorage = require('src/boundary/cache/redis_client');
+const redisClient = require('src/boundary/cache/redis_client');
 const omdbClient = require('src/boundary/omdb/client');
 const logger = require('winston');
 
@@ -16,7 +16,7 @@ module.exports = (title) => {
 };
 
 function _search(title, year) {
-    return cacheStorage
+    return redisClient
         .get(title, year)
         .then((data) => {
 
@@ -24,7 +24,7 @@ function _search(title, year) {
                 data = omdbClient
                     .searchByTitle(title, year)
                     .then(omdbData => {
-                        cacheStorage.set(title, year, omdbData);
+                        redisClient.set(title, year, omdbData);
                         return omdbData;
                     });
             }

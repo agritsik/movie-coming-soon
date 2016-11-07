@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const app = require('src/app');
-const mongo = require('src/boundary/db/mongo_client');
-const redis = require('src/boundary/cache/redis_client');
+const mongoClient = require('src/boundary/db/mongo_client');
+const redisClient = require('src/boundary/cache/redis_client');
 const http = require('http');
 const logger = require('winston');
 
@@ -11,7 +11,7 @@ const server = http.createServer(app);
 
 // start server
 Promise
-    .all([mongo.init(), redis.init()])
+    .all([mongoClient.init(), redisClient.init()])
     .then(() => server.listen(port))
     .catch((err)=> logger.error(err));
 
