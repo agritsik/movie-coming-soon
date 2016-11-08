@@ -9,6 +9,9 @@ module.exports = express.Router()
             ? createReminderActionGen
             : createReminderAction;
 
+        if(req.body.imdbID == null || req.body.email == null) {
+            res.status(400).send({error: "Validation error"})
+        }
         action(req.body.imdbID, req.body.email)
             .then(data => res.status(201).send({insertedCount: data}))
             .catch(next);

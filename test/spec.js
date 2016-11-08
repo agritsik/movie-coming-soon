@@ -16,25 +16,58 @@ describe('', ()=> {
             request(app)
                 .get('/')
                 .set('Accept', 'application/json')
-                .expect(200, '<h1>Coming soon movies API</h1>', done);
+                .expect(200)
+                .expect('<h1>Coming soon movies API</h1>')
+                .end(done);
         });
     });
 
     describe('GET /search', ()=> {
-        it('should return empty array', (done)=> {
+        it('should return 200 and an empty array if query is empty', (done)=> {
             request(app)
                 .get('/search')
                 .set('Accept', 'application/json')
-                .expect(200, '[]', done);
+                .expect(200)
+                .expect('[]')
+                .end(done);;
         });
-    });
-
-    describe('GET /search?s=woman', ()=> {
-        it('should return "A Man and a Woman" movie', (done)=> {
+        it('should return 200 and "A Man and a Woman" if query is ?s=woman', (done)=> {
             request(app)
                 .get('/search?s=woman')
                 .set('Accept', 'application/json')
-                .expect(200, /A Man and a Woman/, done);
+                .expect(200)
+                .expect(/A Man and a Woman/)
+                .end(done);
+        });
+    });
+
+    describe('POST /reminders', ()=> {
+        it('should return 201 and insertedCount if body is a valid object', (done)=> {
+            request(app)
+                .post('/reminders')
+                .send({email: "a.gritsiK@gmail.com", imdbID: "tt4244162"})
+                .set('Accept', 'application/json')
+                .expect(201)
+                .expect(/{"insertedCount":1}/)
+                .end(done);
+        });
+        it('should return 400 and error message if body is empty', (done)=> {
+            request(app)
+                .post('/reminders')
+                .send('')
+                .set('Accept', 'application/json')
+                .expect(400)
+                .expect(/Validation error/)
+                .end(done);
+        });
+        it('should return 400 and error message if email is not presented', (done)=> {
+            request(app)
+                .post('/reminders')
+                .send({imdbID: "tt4244162"})
+                .set('Accept', 'application/json')
+                .expect(400)
+                .expect(/Validation error/)
+                .end(done);
         });
     });
 });
