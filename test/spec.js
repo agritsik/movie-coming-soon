@@ -8,7 +8,7 @@ logger.level = 'error';
 
 describe('', ()=> {
     before((done)=> {
-        Promise.all([mongo.init(), redis.init()]).then(done());
+        Promise.all([mongo.init(), redis.init()]).then(()=>done());
     });
 
     describe('GET /', ()=> {
